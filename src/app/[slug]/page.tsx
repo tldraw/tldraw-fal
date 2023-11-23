@@ -4,8 +4,8 @@ import { LiveImageShapeUtil } from "@/components/live-image";
 import * as fal from "@fal-ai/serverless-client";
 import { Editor, FrameShapeTool, Tldraw, useEditor } from "@tldraw/tldraw";
 import { useCallback } from "react";
-import { LiveImageTool, MakeLiveButton } from "../components/LiveImageTool";
-import { useYjsStore } from "../useYjsStore";
+import { LiveImageTool, MakeLiveButton } from "../../components/LiveImageTool";
+import { useYjsStore } from "../../useYjsStore";
 
 fal.config({
   requestMiddleware: fal.withProxy({
@@ -18,9 +18,9 @@ const HOST_URL = "wss://tldraw-fal-party.partykit.partykit.dev/parties/yjs";
 const shapeUtils = [LiveImageShapeUtil];
 const tools = [LiveImageTool];
 
-export default function Home() {
+export default function Home(props: { params: Record<string, string> }) {
   const store = useYjsStore({
-    roomId: "example17",
+    roomId: props.params.slug,
     hostUrl: HOST_URL,
     shapeUtils,
   });
