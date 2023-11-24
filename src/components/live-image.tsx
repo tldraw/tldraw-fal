@@ -1,11 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
+  AssetRecordType,
   FrameShapeUtil,
   getSvgAsImage,
   HTMLContainer,
   TLEventMapHandler,
   TLFrameShape,
+  TLImageAsset,
   TLShape,
   useEditor,
 } from "@tldraw/tldraw";
@@ -55,8 +57,9 @@ export class LiveImageShapeUtil extends FrameShapeUtil {
 
   override component(shape: TLFrameShape) {
     const editor = useEditor();
+
     const component = super.component(shape);
-    const [image, setImage] = useState<string | null>(null);
+    let [images, setImages] = useState<string[] | null>(null);
 
     const imageDigest = useRef<string | null>(null);
     const startedIteration = useRef<number>(0);
@@ -85,7 +88,16 @@ export class LiveImageShapeUtil extends FrameShapeUtil {
           const data = JSON.parse(message.data);
           // console.log("WebSocket Message:", data);
           if (data.images && data.images.length > 0) {
-            setImage(data.images[0].url);
+            images = [...(images || []), data.images[0].url]
+            editor.updateShape({
+              id: shape.id,
+              type: "live-image",
+              meta: {
+                images: images
+              }
+            })
+            setImages([...(images || []), data.images[0].url]);
+            console.log(data.images[0].url, images)
           }
         } catch (e) {
           console.error("Error parsing the WebSocket response:", e);
@@ -201,7 +213,7 @@ export class LiveImageShapeUtil extends FrameShapeUtil {
 
         finishedIteration.current = iteration;
         // if (result && result.images.length > 0) {
-        //   setImage(result.images[0].url);
+        //   setImages(result.images[0].url);
         // }
       }, 0),
       []
@@ -235,20 +247,62 @@ export class LiveImageShapeUtil extends FrameShapeUtil {
         >
           {component}
 
-          {image && (
+          {shape.meta.images && shape.meta.images.map((image: string, i: int) => (
             <img
               src={image}
               alt=""
+              onPointerEnter={(e) => e.target.style.zIndex = 10000}
+              onPointerLeave={(e) => e.target.style.zIndex = 4200}
+              onPointerDown={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                const target = e.target as HTMLImageElement;
+                console.log(target?.src);
+
+                editor.batch(() => {
+                  let img = AssetRecordType.create({
+                    type: "image",
+                    props: {
+                      w: shape.props.w,
+                      h: shape.props.h,
+                      name: "funtimes",
+                      isAnimated: false,
+                      mimeType: 'image/jpeg',
+                      src: target.src
+                    }
+                  })
+                  editor.createAssets([img])
+                  // console.log()
+                  const children = editor.getSortedChildIdsForParent(shape)
+                  editor.deleteShapes(children)
+                  editor.createShape({
+                    type: "image",
+                    parentId: shape.id,
+                    props: {
+                      assetId: img.id,
+                      w: shape.props.w,
+                      h: shape.props.h
+                    }
+                  })
+                })
+
+                // editor.putContentOntoCurrentPage({ assets: [img], rootShapeIds: [shape.id], shapes: [shape], schema: editor.store.schema })
+              }}
+              className={"asdfimage"}
               width={shape.props.w}
               height={shape.props.h}
+              key={image + i}
               style={{
-                position: "relative",
+                position: "absolute",
+                pointerEvents: "all",
+                zIndex: 4200,
                 left: shape.props.w,
+                top: -0.1 * shape.props.w * ((shape.meta.images?.length || 0) - i),
                 width: shape.props.w,
                 height: shape.props.h,
               }}
             />
-          )}
+          ))}
         </div>
       </HTMLContainer>
     );
