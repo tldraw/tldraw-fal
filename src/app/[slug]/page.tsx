@@ -4,8 +4,8 @@ import { LiveImageShapeUtil } from "@/components/live-image";
 import * as fal from "@fal-ai/serverless-client";
 import { Editor, FrameShapeTool, Tldraw, useEditor } from "@tldraw/tldraw";
 import { useCallback } from "react";
-import { LiveImageTool, MakeLiveButton } from "../components/LiveImageTool";
-import { useYjsStore } from "../useYjsStore";
+import { LiveImageTool, MakeLiveButton } from "../../components/LiveImageTool";
+import { useYjsStore } from "../../useYjsStore";
 
 fal.config({
   requestMiddleware: fal.withProxy({
@@ -18,23 +18,14 @@ const HOST_URL = "wss://tldraw-fal-party.partykit.partykit.dev/parties/yjs";
 const shapeUtils = [LiveImageShapeUtil];
 const tools = [LiveImageTool];
 
-export default function Home() {
+export default function Home(props: { params: Record<string, string> }) {
   const store = useYjsStore({
-    roomId: "example17",
+    roomId: props.params.slug,
     hostUrl: HOST_URL,
     shapeUtils,
   });
 
   const onEditorMount = (editor: Editor) => {
-    // @ts-expect-error: patch
-    editor.isShapeOfType = function (arg, type) {
-      const shape = typeof arg === "string" ? this.getShape(arg)! : arg;
-      if (shape.type === "live-image" && type === "frame") {
-        return true;
-      }
-      return shape.type === type;
-    };
-
     // If there isn't a live image shape, create one
     const liveImage = editor.getCurrentPageShapes().find((shape) => {
       return shape.type === "live-image";

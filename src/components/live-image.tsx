@@ -87,7 +87,12 @@ export class LiveImageShapeUtil extends FrameShapeUtil {
     const isReconnecting = useRef(false);
 
     const connect = useCallback(() => {
-      webSocketRef.current = new WebSocket(URL);
+      webSocketRef.current = new WebSocket(
+        `wss://tldraw-fal-party.partykit.partykit.dev/party/${
+          window.location.pathname.slice(1) || "_default_"
+        }`
+      );
+      // webSocketRef.current = new WebSocket(URL);
       webSocketRef.current.onopen = () => {
         // console.log("WebSocket Open");
       };

@@ -14,8 +14,13 @@
     "@fal-ai/serverless-proxy": "^0.5.0",
     "@tldraw/tldraw": "^2.0.0-canary.ba4091c59418",
     "next": "14.0.3",
+    "partysocket": "^0.0.16",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "y-partykit": "^0.0.10",
+    "y-utility": "^0.1.3",
+    "y-websocket": "^1.5.0",
+    "yjs": "^13.6.10"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -24,6 +29,7 @@
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
+    "partykit": "0.0.39",
     "postcss": "^8",
     "prettier": "^3.1.0",
     "tailwindcss": "^3.3.0",

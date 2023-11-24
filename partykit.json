@@ -1,0 +1,8 @@
+{
+  "name": "tldraw-fal-party",
+  "main": "party/index.ts",
+  "parties": {
+    "yjs": "party/yjs.ts"
+  },
+  "compatibilityDate": "2023-11-23"
+}
