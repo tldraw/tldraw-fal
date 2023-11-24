@@ -17,6 +17,15 @@ const tools = [LiveImageTool];
 
 export default function Home() {
   const onEditorMount = (editor: Editor) => {
+    // @ts-expect-error: patch
+    editor.isShapeOfType = function (arg, type) {
+      const shape = typeof arg === "string" ? this.getShape(arg)! : arg;
+      if (shape.type === "live-image" && type === "frame") {
+        return true;
+      }
+      return shape.type === type;
+    };
+
     // If there isn't a live image shape, create one
     const liveImage = editor.getCurrentPageShapes().find((shape) => {
       return shape.type === "live-image";
