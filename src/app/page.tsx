@@ -2,7 +2,7 @@
 
 import { LiveImageShape, LiveImageShapeUtil } from '@/components/LiveImageShapeUtil'
 import * as fal from '@fal-ai/serverless-client'
-import { Editor, Tldraw, useEditor } from '@tldraw/tldraw'
+import { Editor, TLUiMenuGroup, TLUiOverrides, Tldraw, menuItem, toolbarItem, useEditor } from '@tldraw/tldraw'
 import { useEffect } from 'react'
 import { LiveImageTool, MakeLiveButton } from '../components/LiveImageTool'
 
@@ -11,6 +11,35 @@ fal.config({
 		targetUrl: '/api/fal/proxy',
 	}),
 })
+
+export const overrides: TLUiOverrides = {
+	tools(editor, tools) {
+		tools.liveImage = {
+			id: 'live-image',
+			icon: 'tool-frame',
+			label: 'Frame',
+			kbd: 'f',
+			readonlyOk: false,
+			onSelect: () => {
+				editor.setCurrentTool('live-image')
+			},
+		}
+		return tools
+	},
+	toolbar(_app, toolbar, { tools }) {
+		const frameIndex = toolbar.findIndex((item) => item.id === 'frame')
+		if (frameIndex !== -1) toolbar.splice(frameIndex, 1)
+		const highlighterIndex = toolbar.findIndex((item) => item.id === 'highlight')
+		if (highlighterIndex !== -1) {
+			const highlighterItem = toolbar[highlighterIndex]
+			toolbar.splice(highlighterIndex, 1)
+			toolbar.splice(3, 0, highlighterItem)
+		}
+		toolbar.splice(4, 0, toolbarItem(tools.liveImage))
+		return toolbar
+	},
+}
+
 
 const shapeUtils = [LiveImageShapeUtil]
 const tools = [LiveImageTool]
@@ -51,6 +80,7 @@ export default function Home() {
 					shapeUtils={shapeUtils}
 					tools={tools}
 					shareZone={<MakeLiveButton />}
+					overrides={overrides}
 				>
 					<SneakySideEffects />
 				</Tldraw>
