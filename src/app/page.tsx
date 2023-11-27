@@ -2,7 +2,14 @@
 
 import { LiveImageShape, LiveImageShapeUtil } from '@/components/LiveImageShapeUtil'
 import * as fal from '@fal-ai/serverless-client'
-import { Editor, TLUiMenuGroup, TLUiOverrides, Tldraw, menuItem, toolbarItem, useEditor } from '@tldraw/tldraw'
+import {
+	DefaultSizeStyle,
+	Editor,
+	TLUiOverrides,
+	Tldraw,
+	toolbarItem,
+	useEditor,
+} from '@tldraw/tldraw'
 import { useEffect } from 'react'
 import { LiveImageTool, MakeLiveButton } from '../components/LiveImageTool'
 
@@ -40,7 +47,6 @@ export const overrides: TLUiOverrides = {
 	},
 }
 
-
 const shapeUtils = [LiveImageShapeUtil]
 const tools = [LiveImageTool]
 
@@ -69,6 +75,8 @@ export default function Home() {
 				},
 			})
 		}
+
+		editor.setStyleForNextShapes(DefaultSizeStyle, 'xl', { ephemeral: true })
 	}
 
 	return (
