@@ -85,7 +85,7 @@ export const FrameLabelInput = forwardRef<
 				onBlur={handleBlur}
 				onChange={handleChange}
 			/>
-			{defaultEmptyAs(name, 'Frame') + String.fromCharCode(8203)}
+			{defaultEmptyAs(name, 'Double click prompt to edit it') + String.fromCharCode(8203)}
 		</div>
 	)
 })

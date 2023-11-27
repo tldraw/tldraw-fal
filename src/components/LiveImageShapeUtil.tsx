@@ -65,7 +65,7 @@ export class LiveImageShapeUtil extends ShapeUtil<LiveImageShape> {
 		return {
 			w: 512,
 			h: 512,
-			name: 'a city skyline',
+			name: '',
 		}
 	}
 
