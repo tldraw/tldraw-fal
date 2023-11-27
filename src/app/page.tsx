@@ -42,7 +42,7 @@ export const overrides: TLUiOverrides = {
 			toolbar.splice(highlighterIndex, 1)
 			toolbar.splice(3, 0, highlighterItem)
 		}
-		toolbar.splice(4, 0, toolbarItem(tools.liveImage))
+		toolbar.splice(2, 0, toolbarItem(tools.liveImage))
 		return toolbar
 	},
 }
