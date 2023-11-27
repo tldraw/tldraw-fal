@@ -77,6 +77,7 @@ export const FrameLabelInput = forwardRef<
 				onKeyDown={handleKeyDown}
 				onBlur={handleBlur}
 				onChange={handleChange}
+				onPointerDown={stopEventPropagation}
 			/>
 			{defaultEmptyAs(name, 'Double click prompt to edit') + String.fromCharCode(8203)}
 		</div>
