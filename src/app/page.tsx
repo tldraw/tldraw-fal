@@ -78,6 +78,8 @@ export default function Home() {
 					w: 512,
 					h: 512,
 					name: '',
+					strength: 0.65,
+					seed: Math.floor(Math.random() * 10000),
 				},
 			})
 		}

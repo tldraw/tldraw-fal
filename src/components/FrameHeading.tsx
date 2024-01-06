@@ -1,12 +1,10 @@
 import {
 	SelectionEdge,
 	TLShapeId,
-	canonicalizeRotation,
 	getPointerInfo,
-	toDomPrecision,
 	useEditor,
 	useIsEditing,
-	useValue,
+	TLFrameShape,
 } from '@tldraw/editor'
 import { preventDefault, stopEventPropagation } from '@tldraw/tldraw'
 import { useCallback, useEffect, useRef } from 'react'
@@ -17,18 +15,17 @@ export function FrameHeading({
 	name,
 	width,
 	height,
+	labelSide,
+	labelTranslate,
 }: {
 	id: TLShapeId
 	name: string
 	width: number
 	height: number
+	labelSide: SelectionEdge
+	labelTranslate: string
 }) {
 	const editor = useEditor()
-	const pageRotation = useValue(
-		'shape rotation',
-		() => canonicalizeRotation(editor.getShapePageTransform(id)!.rotation()),
-		[editor, id]
-	)
 
 	const isEditing = useIsEditing(id)
 
@@ -72,31 +69,6 @@ export function FrameHeading({
 		}
 	}, [rInput, isEditing])
 
-	// rotate right 45 deg
-	const offsetRotation = pageRotation + Math.PI / 4
-	const scaledRotation = (offsetRotation * (2 / Math.PI) + 4) % 4
-	const labelSide: SelectionEdge = (['top', 'left', 'bottom', 'right'] as const)[
-		Math.floor(scaledRotation)
-	]
-
-	let labelTranslate: string
-	switch (labelSide) {
-		case 'top':
-			labelTranslate = ``
-			break
-		case 'right':
-			labelTranslate = `translate(${toDomPrecision(width)}px, 0px) rotate(90deg)`
-			break
-		case 'bottom':
-			labelTranslate = `translate(${toDomPrecision(width)}px, ${toDomPrecision(
-				height
-			)}px) rotate(180deg)`
-			break
-		case 'left':
-			labelTranslate = `translate(0px, ${toDomPrecision(height)}px) rotate(270deg)`
-			break
-	}
-
 	return (
 		<div
 			className="tl-frame-heading"
@@ -111,7 +83,32 @@ export function FrameHeading({
 			onPointerDown={handlePointerDown}
 		>
 			<div className="tl-frame-heading-hit-area">
-				<FrameLabelInput ref={rInput} id={id} name={name} isEditing={isEditing} />
+				<FrameLabelInput
+					type={'text'}
+					ref={rInput}
+					id={id}
+					value={name}
+					onValueChange={(value) => {
+						const shape = editor.getShape<TLFrameShape>(id)
+						if (!shape) return
+
+						const name = shape.props.name
+						if (name === value) return
+
+						editor.updateShapes(
+							[
+								{
+									id,
+									type: 'frame',
+									props: {name: value},
+								},
+							],
+							{squashing: true}
+						)
+					}}
+					placeholder={'Double click prompt to edit'}
+					showOnlyIfEditing={true}
+				/>
 			</div>
 		</div>
 	)

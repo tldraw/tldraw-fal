@@ -3,6 +3,7 @@
 import {
 	AssetRecordType,
 	Button,
+	defineMigrations,
 	Geometry2d,
 	getDefaultColorTheme,
 	Rectangle2d,
@@ -21,7 +22,7 @@ import {
 } from '@tldraw/tldraw'
 
 import { useLiveImage } from '@/hooks/useLiveImage'
-import { FrameHeading } from './FrameHeading'
+import {FrameSettings} from "@/components/FrameSettings";
 
 // See https://www.fal.ai/models/latent-consistency-sd
 
@@ -53,6 +54,8 @@ export type LiveImageShape = TLBaseShape<
 		h: number
 		name: string
 		overlayResult?: boolean
+		strength: number
+		seed: number
 	}
 >
 
@@ -69,8 +72,37 @@ export class LiveImageShapeUtil extends ShapeUtil<LiveImageShape> {
 			w: 512,
 			h: 512,
 			name: '',
+			strength: 0.65,
+			seed: Math.floor(Math.random() * 10000)
 		}
 	}
+
+	static migrations = defineMigrations({
+		firstVersion: 0,
+		currentVersion: 2,
+		migrators: {
+			[1]: {
+				up: (shape: LiveImageShape) => {
+					shape.props.strength = 0.65
+					return shape
+				},
+				down: (shape) => {
+					delete shape.props.strength
+					return shape
+				},
+			},
+			[2]: {
+				up: (shape: LiveImageShape) => {
+					shape.props.seed = Math.floor(Math.random() * 10000)
+					return shape
+				},
+				down: (shape) => {
+					delete shape.props.seed
+					return shape
+				},
+			}
+		},
+	})
 
 	override getGeometry(shape: LiveImageShape): Geometry2d {
 		return new Rectangle2d({
@@ -172,9 +204,8 @@ export class LiveImageShapeUtil extends ShapeUtil<LiveImageShape> {
 						stroke={theme.text}
 					/>
 				</SVGContainer>
-				<FrameHeading
-					id={shape.id}
-					name={shape.props.name}
+				<FrameSettings
+					shape={shape}
 					width={bounds.width}
 					height={bounds.height}
 				/>

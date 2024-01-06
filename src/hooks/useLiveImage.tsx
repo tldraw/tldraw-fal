@@ -122,6 +122,8 @@ export function useLiveImage(
 	useEffect(() => {
 		let prevHash = ''
 		let prevPrompt = ''
+		let prevStrength = 0.65
+		let prevSeed = 0
 
 		let startedIteration = 0
 		let finishedIteration = 0
@@ -132,7 +134,14 @@ export function useLiveImage(
 
 			const hash = getHashForObject([...shapes])
 			const frameName = frame.props.name
-			if (hash === prevHash && frameName === prevPrompt) return
+			const strength = frame.props.strength
+			const seed = frame.props.seed
+
+			if (hash === prevHash
+				&& frameName === prevPrompt
+				&& strength === prevStrength
+				&& seed === prevSeed
+			) return
 
 			startedIteration += 1
 			const iteration = startedIteration
@@ -187,8 +196,8 @@ export function useLiveImage(
 					prompt,
 					image_url: imageDataUri,
 					sync_mode: true,
-					strength: 0.65,
-					seed: Math.abs(random() * 10000), // TODO make this configurable in the UI
+					strength: Math.min(1, Math.max(0, strength)),
+					seed,
 					enable_safety_checks: false,
 				})
 				// cancel if stale:
