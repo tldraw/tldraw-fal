@@ -1,9 +1,5 @@
 version: '3'
 
-volumes:
-  df-mysql-data:
-    driver: local
-
 networks:
   backend:
     driver: bridge
