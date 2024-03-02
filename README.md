@@ -55,13 +55,23 @@ npm run dev
 
 And open `localhost:3000`
 
-## 5. Draw fast
+## 5. Run with Docker
+
+In your terminal…
+
+```
+docker-compose up
+```
+
+And open `localhost:3000`
+
+## 6. Draw fast
 
 Draw something in the rectangle!
 Double-clicking the prompt to change it.
 Click the small arrow to enter *lens mode*.
 
-## 6. Share!
+## 7. Share!
 
 Record your screen and show us what you draw fast.
 

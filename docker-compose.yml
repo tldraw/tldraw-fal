@@ -1,0 +1,21 @@
+version: '3'
+
+volumes:
+  df-mysql-data:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+
+  node:
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - '.:/app'
+    command: 'npm run dev'
+    networks:
+      - backend
