@@ -14,12 +14,15 @@
 		"@fal-ai/serverless-client": "^0.6.0",
 		"@fal-ai/serverless-proxy": "^0.6.0",
 		"@tldraw/tldraw": "canary",
+		"clsx": "^2.1.0",
 		"next": "14.0.3",
 		"react": "^18",
 		"react-dom": "^18",
+		"tailwindcss": "3.3.3",
 		"uuid": "^9.0.1"
 	},
 	"devDependencies": {
+		"@heroicons/react": "^2.1.1",
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",

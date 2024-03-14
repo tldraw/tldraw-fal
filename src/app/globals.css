@@ -1,4 +1,7 @@
 @import url('@tldraw/tldraw/tldraw.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html,
 * {
@@ -14,7 +17,6 @@ body {
 	min-height: -webkit-fill-available;
 	height: 100%;
 }
-
 
 .lockup__link img.lockup__by {
 	height: 40px;
@@ -166,5 +168,5 @@ body {
 }
 
 a {
-	color: black
+	color: black;
 }
