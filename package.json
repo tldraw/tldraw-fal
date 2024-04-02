@@ -11,8 +11,8 @@
 		"format": "prettier --write ."
 	},
 	"dependencies": {
-		"@fal-ai/serverless-client": "^0.6.0",
-		"@fal-ai/serverless-proxy": "^0.6.0",
+		"@fal-ai/serverless-client": "^0.8.2",
+		"@fal-ai/serverless-proxy": "^0.7.3",
 		"@tldraw/tldraw": "canary",
 		"next": "14.0.3",
 		"react": "^18",

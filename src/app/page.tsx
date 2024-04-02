@@ -2,12 +2,11 @@
 'use client'
 
 import { LiveImageShape, LiveImageShapeUtil } from '@/components/LiveImageShapeUtil'
-import { LiveImageTool,MakeLiveButton } from '@/components/LiveImageTool'
+import { LiveImageTool, MakeLiveButton } from '@/components/LiveImageTool'
 import { LockupLink } from '@/components/LockupLink'
 import { LiveImageProvider } from '@/hooks/useLiveImage'
 import * as fal from '@fal-ai/serverless-client'
 import {
-	AssetRecordType,
 	DefaultSizeStyle,
 	Editor,
 	TLUiOverrides,
@@ -20,9 +19,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 fal.config({
-	requestMiddleware: fal.withProxy({
-		targetUrl: '/api/fal/proxy',
-	}),
+	proxyUrl: '/api/fal/proxy',
 })
 
 const overrides: TLUiOverrides = {
@@ -86,7 +83,7 @@ export default function Home() {
 	}
 
 	return (
-		<LiveImageProvider appId="110602490-lcm-sd15-i2i">
+		<LiveImageProvider>
 			<main className="tldraw-wrapper">
 				<div className="tldraw-wrapper__inner">
 					<Tldraw
@@ -146,13 +143,13 @@ const LiveImageAsset = track(function LiveImageAsset({ shape }: { shape: LiveIma
 	if (!shape.props.overlayResult) return null
 
 	const transform = editor.getShapePageTransform(shape).toCssString()
-	const assetId = AssetRecordType.createId(shape.id.split(':')[1])
-	const asset = editor.getAsset(assetId)
+	// const assetId = AssetRecordType.createId(shape.id.split(':')[1])
+	// const asset = editor.getAsset(assetId)
 	return (
-		asset &&
-		asset.props.src && (
+		shape &&
+		shape.props.src && (
 			<img
-				src={asset.props.src!}
+				src={shape.props.src!}
 				alt={shape.props.name}
 				width={shape.props.w}
 				height={shape.props.h}

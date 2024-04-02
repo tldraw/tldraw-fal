@@ -53,6 +53,7 @@ export type LiveImageShape = TLBaseShape<
 		h: number
 		name: string
 		overlayResult?: boolean
+		src?: string
 	}
 >
 
@@ -178,20 +179,21 @@ export class LiveImageShapeUtil extends ShapeUtil<LiveImageShape> {
 					width={bounds.width}
 					height={bounds.height}
 				/>
-				{!shape.props.overlayResult && asset && asset.props.src && (
-					<img
-						src={asset.props.src!}
-						alt={shape.props.name}
-						width={shape.props.w}
-						height={shape.props.h}
-						style={{
-							position: 'relative',
-							left: shape.props.w,
-							width: shape.props.w,
-							height: shape.props.h,
-						}}
-					/>
-				)}
+
+				<img
+					src={shape.props.src!}
+					alt={shape.props.name}
+					width={shape.props.w}
+					height={shape.props.h}
+					style={{
+						position: 'absolute',
+						left: shape.props.overlayResult ? 0 : shape.props.w,
+						width: shape.props.w,
+						height: shape.props.h,
+						zIndex: shape.props.overlayResult ? 9999999 : 'inherit',
+					}}
+				/>
+
 				<Button
 					type="icon"
 					icon={shape.props.overlayResult ? 'chevron-right' : 'chevron-left'}
