@@ -2,19 +2,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
 	AssetRecordType,
-	Button,
 	Geometry2d,
-	getDefaultColorTheme,
 	Rectangle2d,
-	resizeBox,
-	ShapeUtil,
 	SVGContainer,
+	ShapeUtil,
 	TLBaseShape,
 	TLGroupShape,
 	TLOnResizeEndHandler,
 	TLOnResizeHandler,
 	TLShape,
 	TLShapeId,
+	TldrawUiButton,
+	TldrawUiButtonIcon,
+	getDefaultColorTheme,
+	resizeBox,
 	toDomPrecision,
 	useEditor,
 	useIsDarkMode,
@@ -192,9 +193,7 @@ export class LiveImageShapeUtil extends ShapeUtil<LiveImageShape> {
 						}}
 					/>
 				)}
-				<Button
-					type="icon"
-					icon={shape.props.overlayResult ? 'chevron-right' : 'chevron-left'}
+				<TldrawUiButton
 					style={{
 						position: 'absolute',
 						top: -4,
@@ -213,7 +212,9 @@ export class LiveImageShapeUtil extends ShapeUtil<LiveImageShape> {
 							props: { overlayResult: !shape.props.overlayResult },
 						})
 					}}
-				/>
+				>
+					<TldrawUiButtonIcon icon={shape.props.overlayResult ? 'chevron-right' : 'chevron-left'} />
+				</TldrawUiButton>
 			</>
 		)
 	}
