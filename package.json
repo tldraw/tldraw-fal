@@ -13,7 +13,7 @@
 	"dependencies": {
 		"@fal-ai/serverless-client": "^0.6.0",
 		"@fal-ai/serverless-proxy": "^0.6.0",
-		"@tldraw/tldraw": "canary",
+		"@tldraw/tldraw": "~2.2.0",
 		"next": "14.0.3",
 		"react": "^18",
 		"react-dom": "^18",

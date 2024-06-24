@@ -141,7 +141,7 @@ export function useLiveImage(
 			prevPrompt = frame.props.name
 
 			try {
-				const svg = await editor.getSvg([...shapes], {
+				const { svg } = await editor.getSvgString([...shapes], {
 					background: true,
 					padding: 0,
 					darkMode: editor.user.getIsDarkMode(),
@@ -156,10 +156,12 @@ export function useLiveImage(
 					return
 				}
 
-				const image = await getSvgAsImage(svg, editor.environment.isSafari, {
+				const image = await getSvgAsImage(editor, svg, {
 					type: 'png',
 					quality: 1,
 					scale: 512 / frame.props.w,
+					height: frame.props.h,
+					width: frame.props.w,
 				})
 				// cancel if stale:
 				if (iteration <= finishedIteration) return
