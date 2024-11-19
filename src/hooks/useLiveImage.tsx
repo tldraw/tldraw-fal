@@ -51,6 +51,7 @@ export function LiveImageProvider({ children }: { children: React.ReactNode }) {
 		const _connection = fal.realtime.connect<LCMInput, LCMOutput>(
 			'fal-ai/sd-turbo-real-time-high-fps-msgpack-a10g',
 			// '110602490-lcm-sd15-i2i',
+			// 'fal-ai/lcm-sd15-i2i',
 			{
 				connectionKey: 'draw-faster',
 				throttleInterval: 0,
@@ -204,9 +205,10 @@ export function useLiveImage(shapeId: TLShapeId) {
 
 						// strength: 0.666666,
 						// strength: 0.6666666666666666,
-						num_inference_steps: 2,
-						// num_inference_steps: 3,
+						// num_inference_steps: 2,
+						num_inference_steps: 3,
 
+						// strength: 0.6677,
 						strength: 0.6666666677,
 						// strength: 0.999999999,
 
